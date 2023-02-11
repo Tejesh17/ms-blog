@@ -26,7 +26,15 @@ type PostComment struct {
 
 var allcomments []AllComments
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+}
+
 func GetCommentsByPostID(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	vars := mux.Vars(r)
 	PostID := vars["id"]
 	IntPostID, err := strconv.Atoi(PostID)
@@ -49,6 +57,7 @@ func GetCommentsByPostID(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllComments(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(allcomments); err != nil {
@@ -57,6 +66,7 @@ func GetAllComments(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddCommentToPost(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var comment PostComment
 	if err := json.NewDecoder(r.Body).Decode(&comment); err != nil {
 		http.Error(w, fmt.Sprintf("error decoding JSON: %v", err), http.StatusBadRequest)
@@ -64,7 +74,7 @@ func AddCommentToPost(w http.ResponseWriter, r *http.Request) {
 	}
 	result := AddComment(comment.PostID, comment.Comment, &allcomments)
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	if err := json.NewEncoder(w).Encode(result); err != nil {
 		panic(err)
 	}
