@@ -13,6 +13,11 @@ type Posts struct {
 	ID    int    `json:"id"`
 }
 
+type EventBusBody struct {
+	Type string                 `json:"type"`
+	Body map[string]interface{} `json:"body"`
+}
+
 var posts []Posts
 
 func enableCors(w *http.ResponseWriter) {
@@ -51,4 +56,14 @@ func ReturnPosts(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 		w.Write(newpost)
 	}
+}
+
+func RecieveEvent(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("here")
+	var EventBody EventBusBody
+	if err := json.NewDecoder(r.Body).Decode(&EventBody); err != nil {
+		http.Error(w, fmt.Sprintf("error decoding JSON: %v", err), http.StatusBadRequest)
+		return
+	}
+	fmt.Println(EventBody)
 }
