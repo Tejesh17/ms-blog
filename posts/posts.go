@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 )
@@ -13,9 +16,9 @@ type Posts struct {
 	ID    int    `json:"id"`
 }
 
-type EventBusBody struct {
-	Type string                 `json:"type"`
-	Body map[string]interface{} `json:"body"`
+type GeneralEventBus struct {
+	Type string      `json:"type"`
+	Body interface{} `json:"body"`
 }
 
 var posts []Posts
@@ -52,6 +55,16 @@ func ReturnPosts(w http.ResponseWriter, r *http.Request) {
 		}
 		posts = append(posts, NewPost)
 		newpost, _ := json.Marshal(NewPost)
+		eventbusbody := GeneralEventBus{
+			Type: "PostCreated",
+			Body: NewPost,
+		}
+		var buf bytes.Buffer
+		err := json.NewEncoder(&buf).Encode(eventbusbody)
+		if err != nil {
+			log.Fatal(err)
+		}
+		http.Post("http://localhost:8085/event", "application/json", &buf)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		w.Write(newpost)
@@ -59,11 +72,7 @@ func ReturnPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func RecieveEvent(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("here")
-	var EventBody EventBusBody
-	if err := json.NewDecoder(r.Body).Decode(&EventBody); err != nil {
-		http.Error(w, fmt.Sprintf("error decoding JSON: %v", err), http.StatusBadRequest)
-		return
-	}
-	fmt.Println(EventBody)
+	a, _ := ioutil.ReadAll(r.Body)
+	var EventBody GeneralEventBus
+	json.Unmarshal(a, &EventBody)
 }
