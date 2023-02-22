@@ -11,10 +11,9 @@ const Home = () => {
 		try {
 			const result = await axios.get("http://localhost:8082/posts");
 			if (result.data) {
-				let allposts = []
-				for(const postcard in result.data){
-					allposts.push(result.data[postcard])
-
+				let allposts = [];
+				for (const postcard in result.data) {
+					allposts.push(result.data[postcard]);
 				}
 				SetPostCards(allposts);
 			}

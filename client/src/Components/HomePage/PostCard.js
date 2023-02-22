@@ -1,9 +1,8 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import Comments from "./Comments";
 import axios from "axios";
 
 const PostCard = (props) => {
-
 	const [newComment, setNewComment] = useState("");
 	const CreateComment = async () => {
 		try {
@@ -20,7 +19,6 @@ const PostCard = (props) => {
 			console.log(e);
 		}
 	};
-
 
 	return (
 		<>
