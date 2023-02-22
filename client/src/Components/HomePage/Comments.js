@@ -7,7 +7,7 @@ const Comments = (props) => {
 				<ul className="list-disc list-outside">
 					{props.comments &&
 						props.comments.map((c) => {
-							return <li key={c.id}>- {c.content}</li>;
+							return <li key={c.commentid}>- {c.content}</li>;
 						})}
 				</ul>
 			</div>

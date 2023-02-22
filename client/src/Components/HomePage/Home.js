@@ -9,9 +9,14 @@ const Home = () => {
 
 	const GetCards = async () => {
 		try {
-			const result = await axios.get("http://localhost:8080/posts");
+			const result = await axios.get("http://localhost:8082/posts");
 			if (result.data) {
-				SetPostCards(result.data);
+				let allposts = []
+				for(const postcard in result.data){
+					allposts.push(result.data[postcard])
+
+				}
+				SetPostCards(allposts);
 			}
 		} catch (e) {
 			console.log(e);
@@ -27,7 +32,6 @@ const Home = () => {
 			if (result.data) {
 				alert("Post Created!");
 				setPostTitle("");
-				GetCards();
 			}
 		} catch (e) {
 			console.log(e);
@@ -63,7 +67,7 @@ const Home = () => {
 			</div>
 			<div className="AllCards flex flex-row flex-wrap justify-center">
 				{postCards.map((post) => (
-					<PostCard key={post.id} title={post.title} id={post.id} />
+					<PostCard key={post.id} post={post} />
 				))}
 			</div>
 		</>

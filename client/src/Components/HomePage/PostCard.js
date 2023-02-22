@@ -1,52 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import Comments from "./Comments";
 import axios from "axios";
 
 const PostCard = (props) => {
-	const [comments, setComments] = useState([]);
+
 	const [newComment, setNewComment] = useState("");
-
-	const GetComments = async (id) => {
-		try {
-			let result = await axios.get(`http://localhost:8081/comments/${id}`);
-			if (result.data) {
-				setComments(result.data.comments);
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
 	const CreateComment = async () => {
 		try {
 			if (newComment === "") return;
 			let result = await axios.post(`http://localhost:8081/comments`, {
-				postid: props.id,
+				postid: props.post.id,
 				comment: newComment,
 			});
 			if (result.data) {
 				alert("Comment added!");
 				setNewComment("");
-				GetComments(props.id);
 			}
 		} catch (e) {
 			console.log(e);
 		}
 	};
 
-	useEffect(() => {
-		GetComments(props.id);
-	}, []);
 
 	return (
 		<>
 			<div className="PostCard basis-1/4 m-1  rounded box-border h-65 w-90 p-2 border-4">
 				<div className="Title align-middle text-center underline ">
-					{props.title}
+					{props.post.title}
 				</div>
 				<div className="text-sm ">Comments:</div>
 				<div className="text-sm h-20 overflow-y-auto">
-					<Comments comments={comments} />
+					<Comments comments={props.post.comments} />
 				</div>
 				<div className="flex flex-col items-center">
 					<input

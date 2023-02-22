@@ -31,7 +31,6 @@ type PostsWithComments struct {
 }
 
 var allposts = make(map[int]PostsWithComments)
-var allpostsjson []byte
 
 func recieveevent(c *gin.Context) {
 	body, _ := ioutil.ReadAll(c.Request.Body)
@@ -40,8 +39,9 @@ func recieveevent(c *gin.Context) {
 	if decodedEvent.Type == "PostCreated" {
 		post := decodedEvent.Body.(map[string]interface{})
 		newpost := PostsWithComments{
-			ID:    int(post["id"].(float64)),
-			Title: post["title"].(string),
+			ID:       int(post["id"].(float64)),
+			Title:    post["title"].(string),
+			Comments: []CommentEvent{},
 		}
 		allposts[int(post["id"].(float64))] = newpost
 	}
@@ -55,8 +55,6 @@ func recieveevent(c *gin.Context) {
 		post := allposts[newComment.PostID]
 		post.Comments = append(post.Comments, newComment)
 		allposts[newComment.PostID] = post
-		json, _ := json.Marshal(allposts)
-		allpostsjson = json
 	}
 	fmt.Println(allposts)
 }
