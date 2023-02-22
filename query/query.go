@@ -31,6 +31,7 @@ type PostsWithComments struct {
 }
 
 var allposts = make(map[int]PostsWithComments)
+var allpostsjson []byte
 
 func recieveevent(c *gin.Context) {
 	body, _ := ioutil.ReadAll(c.Request.Body)
@@ -54,6 +55,12 @@ func recieveevent(c *gin.Context) {
 		post := allposts[newComment.PostID]
 		post.Comments = append(post.Comments, newComment)
 		allposts[newComment.PostID] = post
+		json, _ := json.Marshal(allposts)
+		allpostsjson = json
 	}
 	fmt.Println(allposts)
+}
+
+func getposts(c *gin.Context) {
+	c.JSON(200, allposts)
 }

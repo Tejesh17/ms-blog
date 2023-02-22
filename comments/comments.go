@@ -128,7 +128,6 @@ func AddComment(postID int, content string, allComments *[]AllComments) (AllComm
 }
 
 func RecieveEvent(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("here 123")
 	a, _ := ioutil.ReadAll(r.Body)
 	var EventBody GeneralEventBus
 	_ = json.Unmarshal(a, &EventBody)

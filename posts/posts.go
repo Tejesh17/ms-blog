@@ -30,7 +30,6 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func ReturnPosts(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.Method)
 	enableCors(&w)
 	if r.Method == "GET" {
 		PostsJson, err := json.Marshal(posts)
@@ -47,7 +46,6 @@ func ReturnPosts(w http.ResponseWriter, r *http.Request) {
 
 		var title map[string]string
 		json.Unmarshal(body, &title)
-		fmt.Println(title["title"])
 		num := rand.Intn(99999)
 		NewPost := Posts{
 			Title: title["title"],
