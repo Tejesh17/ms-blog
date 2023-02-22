@@ -20,7 +20,7 @@ func events(c *gin.Context) {
 	fmt.Println(bytes.NewBuffer(body))
 	var eventbody GeneralEventBus
 	json.Unmarshal(body, &eventbody)
-	http.Post("http://localhost:8080/eventbus", "application/json", bytes.NewBuffer(body))
-	http.Post("http://localhost:8081/eventbus", "application/json", bytes.NewBuffer(body))
-	http.Post("http://localhost:8082/eventbus", "application/json", bytes.NewBuffer(body))
+	http.Post("http://posts-srv:8080/eventbus", "application/json", bytes.NewBuffer(body))
+	http.Post("http://comments-srv:8081/eventbus", "application/json", bytes.NewBuffer(body))
+	http.Post("http://query-srv:8082/eventbus", "application/json", bytes.NewBuffer(body))
 }

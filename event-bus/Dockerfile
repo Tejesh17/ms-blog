@@ -12,5 +12,5 @@ COPY . .
 
 CMD ["air", "-c", ".air.toml"]
 
-##  docker build -t tejesh17/blog-ms/event-bus .
+##  docker build -t tejesh17/blog-ms-event-bus .
 ## docker run -t -p 8085:8085 --name blog-ms-event-bus tejesh17/blog-ms/event-bus

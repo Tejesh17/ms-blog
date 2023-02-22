@@ -62,7 +62,7 @@ func ReturnPosts(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		http.Post("http://localhost:8085/event", "application/json", &buf)
+		http.Post("http://event-bus-srv:8085/event", "application/json", &buf)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		w.Write(newpost)

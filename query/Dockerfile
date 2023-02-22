@@ -13,5 +13,5 @@ COPY . .
 CMD ["air", "-c", ".air.toml"]
 
 
-##  docker build -t tejesh17/blog-ms/query .
+##  docker build -t tejesh17/blog-ms-query .
 ## docker run -t -p 8082:8082 --name blog-ms-query tejesh17/blog-ms/query

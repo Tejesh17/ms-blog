@@ -9,7 +9,7 @@ const Home = () => {
 
 	const GetCards = async () => {
 		try {
-			const result = await axios.get("http://localhost:8082/posts");
+			const result = await axios.get("http://posts.com/queryposts");
 			if (result.data) {
 				let allposts = [];
 				for (const postcard in result.data) {
@@ -25,7 +25,7 @@ const Home = () => {
 	const CreateCard = async () => {
 		try {
 			if (postTitle === "") return;
-			const result = await axios.post("http://localhost:8080/posts", {
+			const result = await axios.post("http://post.com/posts", {
 				title: postTitle,
 			});
 			if (result.data) {

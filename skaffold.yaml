@@ -1,0 +1,50 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: tejesh17/blog-ms-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: 'src/**/*.json'
+            dest: .
+    - image: tejesh17/blog-ms-posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.go'
+            dest: .
+    - image: tejesh17/blog-ms-comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.go'
+            dest: .
+    - image: tejesh17/blog-ms-event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.go'
+            dest: .
+    - image: tejesh17/blog-ms-query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual: 
+          - src: '*.go'
+            dest: .
