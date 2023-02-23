@@ -25,7 +25,7 @@ const Home = () => {
 	const CreateCard = async () => {
 		try {
 			if (postTitle === "") return;
-			const result = await axios.post("http://post.com/posts", {
+			const result = await axios.post("http://posts.com/posts", {
 				title: postTitle,
 			});
 			if (result.data) {

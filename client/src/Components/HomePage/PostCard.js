@@ -7,7 +7,7 @@ const PostCard = (props) => {
 	const CreateComment = async () => {
 		try {
 			if (newComment === "") return;
-			let result = await axios.post(`http://post.com/comments`, {
+			let result = await axios.post(`http://posts.com/comments`, {
 				postid: props.post.id,
 				comment: newComment,
 			});

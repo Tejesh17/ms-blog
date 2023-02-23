@@ -14,7 +14,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual: 
-          - src: 'src/**/*.json'
+          - src: 'src/**/*.js'
             dest: .
     - image: tejesh17/blog-ms-posts
       context: posts

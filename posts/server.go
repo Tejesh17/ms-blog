@@ -1,12 +1,18 @@
 package main
 
 import (
-	"log"
 	"net/http"
+
+	"github.com/rs/cors"
 )
 
 func main() {
-	http.HandleFunc("/posts", ReturnPosts)
-	http.HandleFunc("/eventbus", RecieveEvent)
-	log.Fatal((http.ListenAndServe(":8080", nil)))
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/posts", ReturnPosts)
+	mux.HandleFunc("/eventbus", RecieveEvent)
+	handler := cors.Default().Handler(mux)
+
+	http.ListenAndServe(":8080", handler)
+
 }
